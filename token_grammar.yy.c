@@ -352,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 17
-#define YY_END_OF_BUFFER 18
+#define YY_NUM_RULES 18
+#define YY_END_OF_BUFFER 19
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -363,8 +363,8 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[53] =
     {   0,
-        0,    0,   18,   17,   17,   13,   14,   12,   11,   15,
-        9,   16,   10,   17,   10,    8,    8,    8,    8,    8,
+        0,    0,   19,   18,   18,   14,   15,   12,   11,   16,
+        9,   17,   10,   13,   10,    8,    8,    8,    8,    8,
         8,   10,    0,    9,    0,    8,    8,    8,    8,    5,
         8,    8,    4,    9,    0,    9,    8,    8,    8,    2,
         8,    9,    8,    6,    8,    8,    8,    3,    7,    8,
@@ -701,7 +701,7 @@ YY_DECL
 		}
 
 	{
-#line 19 "token_grammar.l"
+#line 20 "token_grammar.l"
 
 
 #line 707 "token_grammar.yy.c"
@@ -763,92 +763,97 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 21 "token_grammar.l"
+#line 22 "token_grammar.l"
 {printf("boolean\n");}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 22 "token_grammar.l"
+#line 23 "token_grammar.l"
 {printf("int\n");}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "token_grammar.l"
+#line 24 "token_grammar.l"
 {printf("float\n");}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 24 "token_grammar.l"
+#line 25 "token_grammar.l"
 {}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "token_grammar.l"
+#line 26 "token_grammar.l"
 {printf("if\n");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 26 "token_grammar.l"
+#line 27 "token_grammar.l"
 {printf("else\n");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 27 "token_grammar.l"
+#line 28 "token_grammar.l"
 {printf("while\n");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 28 "token_grammar.l"
-{printf("id\n");}
+#line 29 "token_grammar.l"
+{printf("id|%s\n", yytext);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 29 "token_grammar.l"
-{printf("number\n");}
+#line 30 "token_grammar.l"
+{printf("number|%s\n", yytext);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 30 "token_grammar.l"
-{printf("relop\n");}
+#line 31 "token_grammar.l"
+{printf("relop|%s\n", yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 31 "token_grammar.l"
-{printf("addop\n");}
+#line 32 "token_grammar.l"
+{printf("addop|%s\n", yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 32 "token_grammar.l"
-{printf("mulop\n");}
+#line 33 "token_grammar.l"
+{printf("mulop|%s\n", yytext);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 33 "token_grammar.l"
-{printf("(\n");}
+#line 34 "token_grammar.l"
+{printf("assign\n");}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 34 "token_grammar.l"
+#line 35 "token_grammar.l"
+{printf("(\n");}
+	YY_BREAK
+case 15:
+YY_RULE_SETUP
+#line 36 "token_grammar.l"
 {printf(")\n");}
 	YY_BREAK
 {printf("{\n");}
 {printf("}\n");}
-case 15:
-YY_RULE_SETUP
-#line 37 "token_grammar.l"
-{printf(",\n");}
-	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 38 "token_grammar.l"
-{printf(";\n");}
+#line 39 "token_grammar.l"
+{printf(",\n");}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 39 "token_grammar.l"
+#line 40 "token_grammar.l"
+{printf(";\n");}
+	YY_BREAK
+case 18:
+YY_RULE_SETUP
+#line 41 "token_grammar.l"
 ECHO;
 	YY_BREAK
-#line 851 "token_grammar.yy.c"
+#line 856 "token_grammar.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1853,7 +1858,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 39 "token_grammar.l"
+#line 41 "token_grammar.l"
 
 
 /*** Code Section***/
@@ -1868,7 +1873,7 @@ int main(){
             which runs the Rule Section
   yytext is the text in the buffer
   */
-
+  FILE *fp;
   fp = fopen("code.in","r");
   yyin = fp;
   yylex();

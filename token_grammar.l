@@ -16,6 +16,7 @@ num  	  {digit}+(\.{digit}+)?(E[+-I]?{digit}+)?
 relop	  (<)|(<\=)|(>)|(>\=)|(\=\=)|(!\=)
 addop   \+|-
 mulop	  (\*)|(\/)
+assign  \=
 %%
 
 boolean   {printf("boolean\n");}
@@ -25,11 +26,12 @@ ws	      {}
 if   	    {printf("if\n");}
 else 	    {printf("else\n");}
 while 	  {printf("while\n");}
-{id}	    {printf("id\n");}
-{num}	    {printf("number\n");}
-{relop}	  {printf("relop\n");}
-{addop}	  {printf("addop\n");}
-{mulop}	  {printf("mulop\n");}
+{id}	    {printf("id|%s\n", yytext);}
+{num}	    {printf("number|%s\n", yytext);}
+{relop}	  {printf("relop|%s\n", yytext);}
+{addop}	  {printf("addop|%s\n", yytext);}
+{mulop}	  {printf("mulop|%s\n", yytext);}
+{assign}	{printf("assign\n");}
 \(	      {printf("(\n");}
 \)	      {printf(")\n");}
 {	        {printf("{\n");}
@@ -50,7 +52,7 @@ int main(){
             which runs the Rule Section
   yytext is the text in the buffer
   */
-
+  FILE *fp;
   fp = fopen("code.in","r");
   yyin = fp;
   yylex();
