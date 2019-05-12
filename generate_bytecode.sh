@@ -3,4 +3,4 @@
 make;
 make clean;
 echo "Running byte code generator"
-./calc
+./java_compiler

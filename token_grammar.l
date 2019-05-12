@@ -1,10 +1,14 @@
-
 /*** Definition Section that may have variables
 which can be accessed inside yylex()
 and main() ***/
 
+%option noyywrap
+
 %{
-  /* we can use variables here */
+#include "heading.h"
+#include "tok.h"
+int yyerror(char *s);
+int yylineno1 = 1;
 %}
 
 delim	  [ \t\n]
@@ -41,20 +45,20 @@ while 	  {printf("while\n");}
 %%
 
 /*** Code Section***/
-int yywrap(){}
-int main(){
-  /*
-  Explanation:
-  yywrap() - wraps the above rule section
-  yyin - takes the file pointer
-            which contains the input
-  yylex() - this is the main flex function
-            which runs the Rule Section
-  yytext is the text in the buffer
-  */
-  FILE *fp;
-  fp = fopen("code.in","r");
-  yyin = fp;
-  yylex();
-  return 0;
-}
+// int yywrap(){}
+// int main(){
+//   /*
+//   Explanation:
+//   yywrap() - wraps the above rule section
+//   yyin - takes the file pointer
+//             which contains the input
+//   yylex() - this is the main flex function
+//             which runs the Rule Section
+//   yytext is the text in the buffer
+//   */
+//   FILE *fp;
+//   fp = fopen("code.in","r");
+//   yyin = fp;
+//   yylex();
+//   return 0;
+// }

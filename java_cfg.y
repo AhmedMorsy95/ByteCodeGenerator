@@ -1,10 +1,10 @@
 /* Infix notation calculator.  */
-
 %{
   #include <math.h>
   #include <stdio.h>
-  int yylex (void);
-  void yyerror (char const *);
+  #include "heading.h"
+  int yyerror(char *s);
+  int yylex(void);
 %}
 
 /* Bison declarations.  */
@@ -37,3 +37,18 @@ exp:
 | '(' exp ')'        { $$ = $2;           }
 ;
 %%
+
+int yyerror(string s)
+{
+  extern int yylineno;	// defined and maintained in lex.c
+  extern char *yytext;	// defined and maintained in lex.c
+
+  cerr << "ERROR: " << s << " at symbol \"" << yytext;
+  cerr << "\" on line " << yylineno << endl;
+  exit(1);
+}
+
+int yyerror(char *s)
+{
+  return yyerror(string(s));
+}
