@@ -7,35 +7,89 @@
   int yylex(void);
 %}
 
+%union{
+  int		int_val;
+  double double_val;
+  string*	lexeme;
+}
+
 /* Bison declarations.  */
-%define api.value.type {double}
-%token NUM
-%left '-' '+'
-%left '*' '/'
-%precedence NEG   /* negation--unary minus */
-%right '^'        /* exponentiation */
+// %define api.value.type {double}
+// %token NUM
+// %left '-' '+'
+// %left '*' '/'
+// %precedence NEG   /* negation--unary minus */
+// %right '^'        /* exponentiation */
 
 %% /* The grammar follows.  */
+
 input:
-  %empty
-| input line
+    %empty
+  | STATEMENT_LIST
 ;
 
-line:
-  '\n'
-| exp '\n'  { printf ("\t%.10g\n", $1); }
+STATEMENT_LIST:
+    STATEMENT
+  | STATEMENT_LIST STATEMENT
 ;
 
-exp:
-  NUM                { $$ = $1;           }
-| exp '+' exp        { $$ = $1 + $3;      }
-| exp '-' exp        { $$ = $1 - $3;      }
-| exp '*' exp        { $$ = $1 * $3;      }
-| exp '/' exp        { $$ = $1 / $3;      }
-| '-' exp  %prec NEG { $$ = -$2;          }
-| exp '^' exp        { $$ = pow ($1, $3); }
-| '(' exp ')'        { $$ = $2;           }
+STATEMENT:
+    DECLARATION
+  | IF
+  | WHILE
+  | ASSIGNMENT
 ;
+
+DECLARATION:
+    PRIMITIVE_TYPE "id" ';'
+;
+
+PRIMITIVE_TYPE:
+    "int"
+  | 'float'
+;
+
+IF:
+    "if" '(' EXPRESSION ')' '{' STATEMENT '}' "else" '{' STATEMENT '}'
+  | "if" '(' EXPRESSION ')' '{' STATEMENT '}'
+;
+
+WHILE:
+    "while" '(' EXPRESSION ')' '{' STATEMENT '}'
+;
+
+ASSIGNMENT:
+    "id" "assign" EXPRESSION ';'
+;
+
+EXPRESSION:
+    SIMPLE_EXPRESSION
+  | SIMPLE_EXPRESSION "relop" SIMPLE_EXPRESSION
+;
+
+SIMPLE_EXPRESSION:
+    TERM
+  | SIGN TERM
+  | SIMPLE_EXPRESSION "addop" TERM
+;
+
+TERM:
+    FACTOR
+  | TERM "mulop" FACTOR
+;
+
+FACTOR:
+    "id"
+  | "num"
+  | '(' EXPRESSION ')'
+;
+
+SIGN:
+    '+'
+  | '-'
+
+
+
 %%
 
 int yyerror(string s)
