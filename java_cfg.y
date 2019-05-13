@@ -25,28 +25,28 @@
 
 input:
     %empty
-  | STATEMENT_LIST
+  | STATEMENT_LIST {printf("input -> STATEMENT_LIST");}
 ;
 
 STATEMENT_LIST:
-    STATEMENT
-  | STATEMENT_LIST STATEMENT
+    STATEMENT                   {printf("STATEMENT_LIST -> STATEMENT");}
+  | STATEMENT_LIST STATEMENT    {printf("STATEMENT_LIST -> STATEMENT_LIST STATEMENT");}
 ;
 
 STATEMENT:
-    DECLARATION
-  | IF
-  | WHILE
-  | ASSIGNMENT
+    DECLARATION       {printf("STATEMENT -> DECLARATION");}
+  | IF                {printf("STATEMENT -> IF");}
+  | WHILE             {printf("STATEMENT -> WHILE");}
+  | ASSIGNMENT        {printf("STATEMENT -> ASSIGNMENT");}
 ;
 
 DECLARATION:
-    PRIMITIVE_TYPE "id" ';'
+    PRIMITIVE_TYPE "id" ';'     {printf("DECLARATION -> PRIMITIVE_TYPE id");}
 ;
 
 PRIMITIVE_TYPE:
-    "int"
-  | 'float'
+    "int"       {printf("PRIMITIVE_TYPE -> int");}
+  | 'float'     {printf("PRIMITIVE_TYPE -> float");}
 ;
 
 IF:
