@@ -8,16 +8,22 @@
 %}
 
 %union{
-  int		int_val;
-  double double_val;
+  float double_val;
   string*	lexeme;
 }
 
-/* Bison declarations.  */
+%start	input
+
 // %define api.value.type {double}
-// %token NUM
-// %left '-' '+'
-// %left '*' '/'
+%type<double_val> FACTOR
+%type<lexeme> T_ID
+%type<double_val> NUM
+%type<void> WS
+
+%token T_ID NUM WS
+
+%left "addop"
+%left "mulop"
 // %precedence NEG   /* negation--unary minus */
 // %right '^'        /* exponentiation */
 
@@ -46,7 +52,7 @@ DECLARATION:
 
 PRIMITIVE_TYPE:
     "int"       {printf("PRIMITIVE_TYPE -> int");}
-  | 'float'     {printf("PRIMITIVE_TYPE -> float");}
+  | "float"     {printf("PRIMITIVE_TYPE -> float");}
 ;
 
 IF:
@@ -79,8 +85,8 @@ TERM:
 ;
 
 FACTOR:
-    "id"
-  | "num"
+    T_ID                //{$$ = $1; cout << "Result: " << $$ << endl;}
+  | NUM                 //{$$ = $1; cout << "Result: " << $$ << endl;}
   | '(' EXPRESSION ')'
 ;
 

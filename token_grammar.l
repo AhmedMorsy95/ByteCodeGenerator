@@ -11,8 +11,7 @@ int yyerror(char *s);
 int yylineno1 = 1;
 %}
 
-delim	  [ \t\n]
-ws      {delim}+
+ws      [ \n\t\r]+
 letter  [A-Za-z]
 digit   [0-9]
 id      {letter}({letter}|{digit})*
@@ -23,42 +22,24 @@ mulop	  (\*)|(\/)
 assign  \=
 %%
 
-boolean   {printf("boolean\n");}
-int       {printf("int\n");}
-float 	  {printf("float\n");}
-ws	      {}
-if   	    {printf("if\n");}
-else 	    {printf("else\n");}
-while 	  {printf("while\n");}
-{id}	    {printf("id|%s\n", yytext);}
-{num}	    {printf("number|%s\n", yytext);}
-{relop}	  {printf("relop|%s\n", yytext);}
-{addop}	  {printf("addop|%s\n", yytext);}
-{mulop}	  {printf("mulop|%s\n", yytext);}
-{assign}	{printf("assign\n");}
-\(	      {printf("(\n");}
-\)	      {printf(")\n");}
-{	        {printf("{\n");}
-}	        {printf("}\n");}
-,	        {printf(",\n");}
-;	        {printf(";\n");}
-%%
-
-/*** Code Section***/
-// int yywrap(){}
-// int main(){
-//   /*
-//   Explanation:
-//   yywrap() - wraps the above rule section
-//   yyin - takes the file pointer
-//             which contains the input
-//   yylex() - this is the main flex function
-//             which runs the Rule Section
-//   yytext is the text in the buffer
-//   */
-//   FILE *fp;
-//   fp = fopen("code.in","r");
-//   yyin = fp;
-//   yylex();
-//   return 0;
-// }
+boolean   { printf("boolean\n"); yylval.lexeme = new std::string(yytext); }
+int       { printf("int\n"); yylval.lexeme = new std::string(yytext); }
+float 	  { printf("float\n"); yylval.lexeme = new std::string(yytext); }
+ws	      { printf("ws"); }
+if   	    { printf("if\n"); yylval.lexeme = new std::string(yytext); }
+else 	    { printf("else\n"); yylval.lexeme = new std::string(yytext); }
+while 	  { printf("while\n"); yylval.lexeme = new std::string(yytext); }
+{id}	    { printf("id|%s\n", yytext); yylval.lexeme = new std::string(yytext);}// return T_ID; }
+{num}	    { printf("number|%s\n", yytext); yylval.double_val = atoi(yytext);}// return NUM; }
+{relop}	  { printf("relop|%s\n", yytext); yylval.lexeme = new std::string(yytext); }
+{addop}	  { printf("addop|%s\n", yytext); yylval.lexeme = new std::string(yytext); }
+{mulop}	  { printf("mulop|%s\n", yytext); yylval.lexeme = new std::string(yytext); }
+{assign}	{ printf("assign\n"); yylval.lexeme = new std::string(yytext); }
+"("	      { printf("(\n"); yylval.lexeme = new std::string(yytext); }
+")"	      { printf(")\n"); yylval.lexeme = new std::string(yytext); }
+"{"       { printf("{\n"); yylval.lexeme = new std::string(yytext); }
+"}"       { printf("}\n"); yylval.lexeme = new std::string(yytext); }
+","       { printf(",\n"); yylval.lexeme = new std::string(yytext); }
+";"       { printf(";\n"); yylval.lexeme = new std::string(yytext); }
+[\n]		  { yylineno1++;	}
+.		      { std::cerr << "SCANNER "; yyerror(""); exit(1);	}
