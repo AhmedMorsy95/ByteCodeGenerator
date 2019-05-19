@@ -432,7 +432,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    23,    23,    24,    24,    25,    26,    27,    28
+       0,    24,    24,    28,    29,    33,    37,    41,    42
 };
 #endif
 
@@ -1211,26 +1211,26 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 25 "parse.y" /* yacc.c:1652  */
-    {printf("statement\n");}
+#line 33 "parse.y" /* yacc.c:1652  */
+    { printf("statement\n"); }
 #line 1217 "parse.tab.c" /* yacc.c:1652  */
     break;
 
   case 6:
-#line 26 "parse.y" /* yacc.c:1652  */
-    {printf("declaration %s\n",(yyvsp[-1].name));}
+#line 37 "parse.y" /* yacc.c:1652  */
+    { printf("declaration %s\n",(yyvsp[-1].name)); }
 #line 1223 "parse.tab.c" /* yacc.c:1652  */
     break;
 
   case 7:
-#line 27 "parse.y" /* yacc.c:1652  */
-    {printf("type %s",(yyval.name));}
+#line 41 "parse.y" /* yacc.c:1652  */
+    { printf("type %s",(yyval.name)); }
 #line 1229 "parse.tab.c" /* yacc.c:1652  */
     break;
 
   case 8:
-#line 28 "parse.y" /* yacc.c:1652  */
-    {printf("type %s",(yyval.name));}
+#line 42 "parse.y" /* yacc.c:1652  */
+    { printf("type %s",(yyval.name)); }
 #line 1235 "parse.tab.c" /* yacc.c:1652  */
     break;
 
@@ -1466,5 +1466,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 31 "parse.y" /* yacc.c:1918  */
+#line 47 "parse.y" /* yacc.c:1918  */
 
