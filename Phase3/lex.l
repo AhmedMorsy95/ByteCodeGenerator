@@ -23,8 +23,8 @@ mulop	  "*"|"/"
 %%
 {ws}       {}
 "boolean"  { printf("boolean\n"); }
-"int" 	   { strcpy(yylval.name,yytext); return INT; }
-"float" 	 { strcpy(yylval.name,yytext); return FLOAT; }
+"int" 	   { strcpy(yylval.name,yytext); return INT_WORD; }
+"float" 	 { strcpy(yylval.name,yytext); return FLOAT_WORD; }
 "if"   	   { printf("if\n"); }
 "else"     { printf("else\n"); }
 "while"    { printf("while\n"); }

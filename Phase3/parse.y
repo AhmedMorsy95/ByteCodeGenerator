@@ -11,8 +11,11 @@
   char name[20];
 }
 
-%token<name> INT
-%token<name> FLOAT
+%token<name> INT_WORD
+%token<name> FLOAT_WORD
+%token<name> BOOL_WORD
+%token<name> VOID_WORD
+%token<name> ERROR_WORD
 %token<name> ID
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
@@ -42,8 +45,8 @@ declaration :
 ;
 
 primitive_type :
-    INT   { printf("type %s\n",$$); }
-  | FLOAT { printf("type %s\n",$$); }
+    INT_WORD   { printf("type %s\n",$$); }
+  | FLOAT_WORD { printf("type %s\n",$$); }
 ;
 
 // assignment : ID "=" expression SEMICOLON
