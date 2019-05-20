@@ -797,17 +797,17 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 27 "lex.l"
-{ printf("id\n");strcpy(yylval.name,yytext); return ID; }
+{ strcpy(yylval.name,yytext); return ID; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 28 "lex.l"
-{ yylval.ival = atoi(yytext); return INT; }
+{ yylval.ival = atoi(yytext); return INTEGER_LITERAL; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 29 "lex.l"
-{ return FLOAT;}
+{ yylval.fval = atof(yytext); return FLOAT_LITERAL; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -852,7 +852,7 @@ YY_RULE_SETUP
 case 19:
 YY_RULE_SETUP
 #line 38 "lex.l"
-{ printf(";\n"); return SEMICOLON; }
+{ return SEMICOLON; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP

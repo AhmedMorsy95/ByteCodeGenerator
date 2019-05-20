@@ -52,9 +52,11 @@ extern int yydebug;
     INT = 258,
     FLOAT = 259,
     ID = 260,
-    ADDOP = 261,
-    MULOP = 262,
-    SEMICOLON = 263
+    INTEGER_LITERAL = 261,
+    FLOAT_LITERAL = 262,
+    ADDOP = 263,
+    MULOP = 264,
+    SEMICOLON = 265
   };
 #endif
 
@@ -69,7 +71,7 @@ union YYSTYPE
 	float fval;
   char name[20];
 
-#line 73 "parse.tab.h" /* yacc.c:1921  */
+#line 75 "parse.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

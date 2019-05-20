@@ -12,9 +12,9 @@ digit   [0-9]
 id      {letter}({letter}|{digit})*
 float   {digit}+(\.{digit}+)
 int  	  {digit}+
-relop	  (<)|(<\=)|(>)|(>\=)|(\=\=)|(!\=)
-addop   \+|-
-mulop	  (\*)|(\/)
+relop	  "<"|"<="|">"|">="|"=="|"!="
+addop   "+"|"-"
+mulop	  "*"|"/"
 
 %%
 {ws}       {}
@@ -25,8 +25,8 @@ mulop	  (\*)|(\/)
 "else"     { printf("else\n"); }
 "while"    { printf("while\n"); }
 {id}	     { strcpy(yylval.name,yytext); return ID; }
-{int}	     { yylval.ival = atoi(yytext); return INT; }
-{float}	   { return FLOAT;}
+{int}	     { yylval.ival = atoi(yytext); return INTEGER_LITERAL; }
+{float}	   { yylval.fval = atof(yytext); return FLOAT_LITERAL; }
 {relop}	   { printf("relop\n"); }
 {addop}	   { return ADDOP; }
 {mulop}	   { return MULOP; }
@@ -35,7 +35,7 @@ mulop	  (\*)|(\/)
 "{"        { printf("{\n"); }
 "}"        { printf("}\n"); }
 ","        { printf(",\n"); }
-";"        { printf(";\n"); return SEMICOLON; }
+";"        { return SEMICOLON; }
 %%
 
 void yyerror(char const *s) { fprintf(stderr, "%s\n", s); }

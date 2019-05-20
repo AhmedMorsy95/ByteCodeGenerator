@@ -12,6 +12,8 @@
 %token<name> INT
 %token<name> FLOAT
 %token<name> ID
+%token<ival> INTEGER_LITERAL
+%token<fval> FLOAT_LITERAL
 %token ADDOP MULOP SEMICOLON
 
 %type<name> primitive_type
@@ -38,8 +40,8 @@ declaration :
 ;
 
 primitive_type :
-    INT { printf("type %s",$$); }
-  | FLOAT { printf("type %s",$$); }
+    INT   { printf("type %s\n",$$); }
+  | FLOAT { printf("type %s\n",$$); }
 ;
 
 // assignment : ID "=" expression SEMICOLON
