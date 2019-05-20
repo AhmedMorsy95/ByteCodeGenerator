@@ -1,7 +1,7 @@
 %{
   #include <stdio.h>
   #include "parse.tab.h"
-  #include "heading.h"
+  // #include "heading.h"
   #include "tok.h"
   int yyerror(char *s);
   int yylineno1 = 1;

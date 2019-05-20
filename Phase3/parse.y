@@ -28,7 +28,7 @@
 %%
 
 method_body :
-    statement_list
+    {	generateHeader();	} statement_list
 ;
 
 statement_list :
