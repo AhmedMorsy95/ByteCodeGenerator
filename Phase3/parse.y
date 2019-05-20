@@ -1,6 +1,10 @@
 %{
     #include <stdio.h>
+    #include <iostream>
     #include "heading.h"
+
+    using namespace std;
+
     int yyerror(char *s);
     int yylex(void);
 %}
@@ -23,17 +27,18 @@
 
 %type<name> primitive_type
 
-%start method_body
+%start input
 
 %%
 
-method_body :
-    {	generateHeader();	} statement_list
+input :
+    %empty
+  | {	generateHeader();	} STATEMENT_LIST { generateFooter(); printCode(); }
 ;
 
-statement_list :
+STATEMENT_LIST :
     statement
-  | statement_list statement
+  | STATEMENT_LIST statement
 ;
 
 statement :

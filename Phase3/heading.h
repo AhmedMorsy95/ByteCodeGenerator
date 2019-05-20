@@ -19,27 +19,11 @@ using namespace std;
 typedef enum {INT_T, FLOAT_T, BOOL_T, VOID_T, ERROR_T} type_enum;
 
 ofstream fout("output.j");	/* file for writing output */
-// void generateHeader(void);	/* generate  header for class to be able to compile the code*/
-// void generateFooter(void);	/* generate  footer for class to be able to compile the code*/
 int varaiblesNum = 1; 	/* new variable will be issued this number, java starts with 1, 0 is 'this' */
 int labelsCount = 0;	/* to generate labels */
 string outfileName;
 map<string, pair<int,type_enum> > symbTab;
 vector<string> codeList;
-
-// void yyerror(char const *s);
-// void cast (string x, int type_t1);
-// void arithCast(int from , int to, string op);
-// void relaCast(string op,char * nTrue, char * nFalse);
-// bool checkId(string id);
-// string getOp(string op);
-// void defineVar(string name, int type);
-// string genLabel();
-// string getLabel(int n);
-// void backpatch(vector<int> *list, int num);
-// vector<int> * merge (vector<int> *list1, vector<int>* list2);
-// void writeCode(string x);
-// void printCode(void);
 
 void yyerror(char const *s)
 {
