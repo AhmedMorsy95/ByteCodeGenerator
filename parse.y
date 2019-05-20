@@ -13,6 +13,7 @@
 	int ival;
 	float fval;
   char name[20];
+  int type;
 }
 
 %token<name> INT_WORD
@@ -25,7 +26,7 @@
 %token<fval> FLOAT_LITERAL
 %token ADDOP MULOP SEMICOLON
 
-%type<name> primitive_type
+%type<type> TYPE
 
 %start input
 
@@ -37,21 +38,21 @@ input :
 ;
 
 STATEMENT_LIST :
-    statement
-  | STATEMENT_LIST statement
+    STATEMENT
+  | STATEMENT_LIST STATEMENT
 ;
 
-statement :
-    declaration { printf("statement\n"); }
+STATEMENT :
+    DECLARATION
 ;
 
-declaration :
-    primitive_type ID SEMICOLON { printf("declaration %s\n",$2); }
+DECLARATION :
+    TYPE ID SEMICOLON { string str($2); if($1 == INT_T) {defineVar(str,INT_T);} else if ($1 == FLOAT_T) {defineVar(str,FLOAT_T);} }
 ;
 
-primitive_type :
-    INT_WORD   { printf("type %s\n",$$); }
-  | FLOAT_WORD { printf("type %s\n",$$); }
+TYPE :
+    INT_WORD   { $$ = INT_T; }
+  | FLOAT_WORD { $$ = FLOAT_T; }
 ;
 
 // assignment : ID "=" expression SEMICOLON
