@@ -1,20 +1,15 @@
 #!/bin/sh
 
-flex lex.l;
+make;
 if [ $? -eq 0 ]; then
-  bison -d parse.y;
+  make clean;
   if [ $? -eq 0 ]; then
-    gcc main.c lex.yy.c parse.tab.c;
-    if [ $? -eq 0 ]; then
-      echo "Build succeeded."
-      echo "Running output file"
-      ./a.out
-    else
-      echo "Compile has failed"
-    fi
+    echo "Build succeeded."
+    echo "Running output file"
+    ./java_compiler
   else
-    echo "Bison has failed"
+    echo "Clean has failed"
   fi
 else
-  echo "Flex has failed"
+  echo "Make has failed"
 fi

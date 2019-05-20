@@ -1,6 +1,10 @@
 %{
   #include <stdio.h>
   #include "parse.tab.h"
+  #include "heading.h"
+  #include "tok.h"
+  int yyerror(char *s);
+  int yylineno1 = 1;
 %}
 
 %option noyywrap
@@ -37,5 +41,3 @@ mulop	  "*"|"/"
 ","        { printf(",\n"); }
 ";"        { return SEMICOLON; }
 %%
-
-void yyerror(char const *s) { fprintf(stderr, "%s\n", s); }

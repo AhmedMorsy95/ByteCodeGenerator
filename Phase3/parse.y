@@ -1,6 +1,8 @@
-
 %{
     #include <stdio.h>
+    #include "heading.h"
+    int yyerror(char *s);
+    int yylex(void);
 %}
 
 %union {
@@ -47,3 +49,19 @@ primitive_type :
 // assignment : ID "=" expression SEMICOLON
 // expression : simple_expression
 %%
+
+
+int yyerror(string s)
+{
+  extern char *yytext;	// defined and maintained in lex.c
+  extern int yylineno;	// defined and maintained in lex.c
+
+  cerr << "ERROR: " << s << " at symbol \"" << yytext;
+  cerr << "\" on line " << yylineno << endl;
+  exit(1);
+}
+
+int yyerror(char *s)
+{
+  return yyerror(string(s));
+}
