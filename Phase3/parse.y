@@ -9,7 +9,7 @@
   char name[20];
 }
 
-%token<name>INT
+%token<name> INT
 %token<name> FLOAT
 %token<name> ID
 %token ADDOP MULOP SEMICOLON
