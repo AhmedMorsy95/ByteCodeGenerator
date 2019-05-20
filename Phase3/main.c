@@ -96,7 +96,8 @@ void arithCast(int from , int to, string op)
 		if(from == INT_T)
 		{
 			writeCode("i" + getOp(op));
-		}else if (from == FLOAT_T)
+		}
+		else if (from == FLOAT_T)
 		{
 			writeCode("f" + getOp(op));
 		}
@@ -144,12 +145,12 @@ void defineVar(string name, int type)
 
 string genLabel()
 {
-	return "L_"+to_string(labelsCount++);
+	return "L_" + to_string(labelsCount++);
 }
 
 string getLabel(int n)
 {
-	return "L_"+to_string(n);
+	return "L_" + to_string(n);
 }
 
 vector<int> * merge(vector<int> *list1, vector<int> *list2)
@@ -158,26 +159,30 @@ vector<int> * merge(vector<int> *list1, vector<int> *list2)
 		vector<int> *list = new vector<int> (*list1);
 		list->insert(list->end(), list2->begin(),list2->end());
 		return list;
-	}else if(list1)
+	}
+	else if(list1)
 	{
 		return list1;
-	}else if (list2)
+	}
+	else if (list2)
 	{
 		return list2;
-	}else
+	}
+	else
 	{
 		return new vector<int>();
 	}
 }
+
 void backpatch(vector<int> *lists, int ind)
 {
 	if(lists)
 	for(int i =0 ; i < lists->size() ; i++)
 	{
 		codeList[(*lists)[i]] = codeList[(*lists)[i]] + getLabel(ind);
-//		printf("%s\n",codeList[(*lists)[i]].c_str());
 	}
 }
+
 void writeCode(string x)
 {
 	codeList.push_back(x);
