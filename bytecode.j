@@ -18,14 +18,21 @@ fstore 2
 .line 1
 iconst_0
 istore 3
+iconst_0
+istore 4
 ldc 60
 ldc 70
 iadd
 istore 3
+ldc 2
+istore 4
 iload 3
+iload 4
+iadd
 ldc 1
 iadd
 istore 3
+ldc 1
 iload 3
 istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;

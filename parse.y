@@ -113,7 +113,7 @@ ASSIGNMENT :
   		}
       else
       {
-  			string err = "identifier: " + str + " isn't declared in this scope";
+  			string err = "Identifier: " + str + " has not been declared.";
   			yyerror(err.c_str());
   		}
   	}
