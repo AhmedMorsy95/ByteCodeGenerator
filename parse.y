@@ -24,7 +24,7 @@
 %token<name> ID
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
-%token ADDOP MULOP SEMICOLON
+%token ADDOP MULOP SEMICOLON ASSIGN
 
 %type<type> TYPE
 
@@ -44,6 +44,7 @@ STATEMENT_LIST :
 
 STATEMENT :
     DECLARATION
+  | ASSIGNMENT
 ;
 
 DECLARATION :
@@ -55,8 +56,26 @@ TYPE :
   | FLOAT_WORD { $$ = FLOAT_T; }
 ;
 
-// assignment : ID "=" expression SEMICOLON
-// expression : simple_expression
+ASSIGNMENT :
+    ID ASSIGN EXPRESSION SEMICOLON { cout << "assignment" << endl;}
+;
+
+EXPRESSION :
+    EXPRESSION ADDOP T_EXPRESSION
+  | T_EXPRESSION
+;
+
+T_EXPRESSION :
+    T_EXPRESSION MULOP FACTOR
+  | FACTOR
+;
+
+FACTOR :
+    INTEGER_LITERAL { cout << "int literal" << endl;}
+  | FLOAT_LITERAL
+  | ID
+  | '(' EXPRESSION ')'
+
 %%
 
 

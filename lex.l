@@ -34,6 +34,7 @@ mulop	  "*"|"/"
 {relop}	   { printf("relop\n"); }
 {addop}	   { return ADDOP; }
 {mulop}	   { return MULOP; }
+"="        { return ASSIGN; }
 "("	       { printf("(\n"); }
 ")"	       { printf(")\n"); }
 "{"        { printf("{\n"); }

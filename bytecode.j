@@ -18,9 +18,5 @@ fstore 2
 .line 1
 iconst_0
 istore 3
-iconst_0
-istore 4
-fconst_0
-fstore 5
 return
 .end method

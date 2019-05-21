@@ -18,7 +18,7 @@ using namespace std;
 
 typedef enum {INT_T, FLOAT_T, BOOL_T, VOID_T, ERROR_T} type_enum;
 
-ofstream fout("output.j");	/* file for writing output */
+ofstream fout("bytecode.j");	/* file for writing output */
 int varaiblesNum = 1; 	/* new variable will be issued this number, java starts with 1, 0 is 'this' */
 int labelsCount = 0;	/* to generate labels */
 string outfileName;
