@@ -32,7 +32,6 @@ iadd
 ldc 1
 iadd
 istore 3
-ldc 1
 iload 3
 istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;

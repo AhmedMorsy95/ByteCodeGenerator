@@ -19,6 +19,7 @@ int  	  {digit}+
 relop	  "<"|"<="|">"|">="|"=="|"!="
 addop   "+"|"-"
 mulop	  "*"|"/"
+comment "//"({letter}*{digit}*[ \t]*)*
 
 %%
 {ws}       {}
@@ -42,4 +43,5 @@ mulop	  "*"|"/"
 "}"        { printf("}\n"); }
 ","        { printf(",\n"); }
 ";"        { return SEMICOLON; }
+{comment}  { return COMMENT_LINE; }
 %%
