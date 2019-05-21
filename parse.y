@@ -26,7 +26,7 @@
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
 %token<op> ADDOP MULOP
-%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET
+%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET PRINT_FUNCTION
 
 %type<type> TYPE
 %type<type> ARTH_FACTOR T_EXPRESSION ARTH_EXPRESSION EXPRESSION
@@ -47,7 +47,27 @@ STATEMENT_LIST :
 STATEMENT :
     DECLARATION
   | ASSIGNMENT
+  | PRINT
 ;
+
+PRINT :
+    PRINT_FUNCTION LEFT_BRACKET EXPRESSION RIGHT_BRACKET SEMICOLON
+    {
+      if($3 == INT_T)
+		  {
+  			writeCode("istore " + to_string(symbTab["1syso_int_var"].first));
+  			writeCode("getstatic      java/lang/System/out Ljava/io/PrintStream;");
+  			writeCode("iload " + to_string(symbTab["1syso_int_var"].first ));
+  			writeCode("invokevirtual java/io/PrintStream/println(I)V");
+  		}
+      else if ($3 == FLOAT_T)
+  		{
+  			writeCode("fstore " + to_string(symbTab["1syso_float_var"].first));
+  			writeCode("getstatic      java/lang/System/out Ljava/io/PrintStream;");
+  			writeCode("fload " + to_string(symbTab["1syso_float_var"].first ));
+  			writeCode("invokevirtual java/io/PrintStream/println(F)V");
+  		}
+    }
 
 DECLARATION :
     TYPE ID SEMICOLON

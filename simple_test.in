@@ -1,2 +1,4 @@
 int x;
-x=60+70;
+x = 60 + 70;
+x = x + 1;
+System.out.println(x);

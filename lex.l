@@ -22,6 +22,7 @@ mulop	  "*"|"/"
 
 %%
 {ws}       {}
+"System.out.println"	{ return PRINT_FUNCTION; }
 "boolean"  { printf("boolean\n"); }
 "int" 	   { strcpy(yylval.name,yytext); return INT_WORD; }
 "float" 	 { strcpy(yylval.name,yytext); return FLOAT_WORD; }
