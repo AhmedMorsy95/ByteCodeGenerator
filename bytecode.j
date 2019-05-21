@@ -16,7 +16,10 @@ istore 1
 fconst_0
 fstore 2
 .line 1
-iconst_0
-istore 3
+fconst_0
+fstore 3
+ldc 0
+ldc 0.666667
+fstore 3
 return
 .end method
