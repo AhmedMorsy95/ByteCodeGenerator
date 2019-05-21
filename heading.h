@@ -120,7 +120,7 @@ void arithCast(int from , int to, string op)
 	}
 	else
 	{
-		yyerror("cast not implemented yet");
+		yyerror("Different types in expression. Not supported yet");
 	}
 }
 

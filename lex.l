@@ -32,8 +32,8 @@ mulop	  "*"|"/"
 {int}	     { yylval.ival = atoi(yytext); return INTEGER_LITERAL; }
 {float}	   { yylval.fval = atof(yytext); return FLOAT_LITERAL; }
 {relop}	   { printf("relop\n"); }
-{addop}	   { yylval.op = yytext[0]; return ADDOP; }
-{mulop}	   { yylval.op = yytext[0]; return MULOP; }
+{addop}	   { strcpy(yylval.op,yytext); return ADDOP; }
+{mulop}	   { strcpy(yylval.op,yytext); return MULOP; }
 "="        { return ASSIGN; }
 "("	       { return LEFT_BRACKET; }
 ")"	       { return RIGHT_BRACKET; }

@@ -14,12 +14,7 @@
 	float fval;
   char name[20];
   int type;
-  char op;
-  struct {
-    int type;
-    int ival;
-    float fval;
-  } exp;
+  char op[2];
 }
 
 %token<name> INT_WORD
@@ -34,7 +29,7 @@
 %token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET
 
 %type<type> TYPE
-%type<exp> ARTH_FACTOR T_EXPRESSION ARTH_EXPRESSION EXPRESSION
+%type<type> ARTH_FACTOR T_EXPRESSION ARTH_EXPRESSION EXPRESSION
 %start input
 
 %%
@@ -80,13 +75,13 @@ ASSIGNMENT :
   		string str($1);
   		if(checkId(str))
   		{
-  			if($3.type == symbTab[str].second)
+  			if($3 == symbTab[str].second)
   			{
-  				if($3.type == INT_T)
+  				if($3 == INT_T)
   				{
   					writeCode("istore " + to_string(symbTab[str].first));
   				}
-          else if ($3.type == FLOAT_T)
+          else if ($3 == FLOAT_T)
   				{
   					writeCode("fstore " + to_string(symbTab[str].first));
   				}
@@ -105,133 +100,46 @@ ASSIGNMENT :
 ;
 
 EXPRESSION :
-    ARTH_EXPRESSION
-    {
-      $$.type = $1.type;
-      if($$.type == INT_T)
-      {
-        $$.ival = $1.ival;
-        writeCode("ldc " + to_string($1.ival));
-      }
-      else
-      {
-        $$.fval = $1.fval;
-        writeCode("ldc " + to_string($1.fval));
-      }
-    }
+    ARTH_EXPRESSION { $$ = $1; }
   // | BOOL_EXPRESSION
 ;
 
 ARTH_EXPRESSION :
-    ARTH_EXPRESSION ADDOP T_EXPRESSION
-    {
-      if($1.type == $3.type)
-      {
-        if($1.type == INT_T)
-        {
-          if($2 == '+')
-          {
-            $$.ival = $1.ival + $3.ival;
-          }
-          else if ($2 == '-')
-          {
-            $$.ival = $1.ival - $3.ival;
-          }
-        }
-        else if($1.type == FLOAT_T)
-        {
-          if($2 == '+')
-          {
-            $$.fval = $1.fval + $3.fval;
-          }
-          else if ($2 == '-')
-          {
-            $$.fval = $1.fval - $3.fval;
-          }
-        }
-      }
-      else
-      {
-        yyerror("Different types in expression. Not supported yet");
-      }
-    }
-  | T_EXPRESSION
-    {
-      $$.type = $1.type;
-      if($$.type == INT_T)
-      {
-        $$.ival = $1.ival;
-      }
-      else
-      {
-        $$.fval = $1.fval;
-      }
-    }
+    ARTH_EXPRESSION ADDOP T_EXPRESSION { arithCast($1, $3, string($2)); }
+  | T_EXPRESSION { $$ = $1; }
 ;
 
 T_EXPRESSION :
-    T_EXPRESSION MULOP ARTH_FACTOR
-    {
-      if($1.type == $3.type)
-      {
-        if($1.type == INT_T)
-        {
-          if($2 == '*')
-          {
-            $$.ival = $1.ival * $3.ival;
-          }
-          else if ($2 == '/')
-          {
-            $$.ival = $1.ival / $3.ival;
-          }
-        }
-        else if($1.type == FLOAT_T)
-        {
-          if($2 == '*')
-          {
-            $$.fval = $1.fval * $3.fval;
-          }
-          else if ($2 == '/')
-          {
-            $$.fval = $1.fval / $3.fval;
-          }
-        }
-      }
-      else
-      {
-        yyerror("Different types in expression. Not supported yet");
-      }
-    }
-  | ARTH_FACTOR
-    {
-      $$.type = $1.type;
-      if($$.type == INT_T)
-      {
-        $$.ival = $1.ival;
-      }
-      else
-      {
-        $$.fval = $1.fval;
-      }
-    }
+    T_EXPRESSION MULOP ARTH_FACTOR { arithCast($1, $3, string($2)); }
+  | ARTH_FACTOR { $$ = $1; }
 ;
 
 ARTH_FACTOR :
-    INTEGER_LITERAL { $$.type = INT_T; $$.ival = $1; }
-  | FLOAT_LITERAL   { $$.type = FLOAT_T; $$.fval = $1; }
+    INTEGER_LITERAL { $$ = INT_T; writeCode("ldc " + to_string($1)); }
+  | FLOAT_LITERAL   { $$ = FLOAT_T; writeCode("ldc "+to_string($1)); }
   | ID
-  | LEFT_BRACKET ARTH_EXPRESSION RIGHT_BRACKET
     {
-      $$.type = $2.type;
-      if($$.type == INT_T)
+      string str($1);
+      if(checkId(str))
       {
-        $$.ival = $2.ival;
+        $$ = symbTab[str].second;
+        if($$ == INT_T)
+        {
+          writeCode("iload " + to_string(symbTab[str].first));
+        }
+        else if ($$ == FLOAT_T)
+        {
+          writeCode("fload " + to_string(symbTab[str].first));
+        }
       }
       else
       {
-        $$.fval = $2.fval;
+        string err = "Identifier: " + str + " has not been declared";
+        yyerror(err.c_str());
+        $$ = ERROR_T;
       }
     }
+  | LEFT_BRACKET ARTH_EXPRESSION RIGHT_BRACKET { $$ = $2; }
 ;
 %%
 
