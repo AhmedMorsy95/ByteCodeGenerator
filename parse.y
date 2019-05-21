@@ -14,6 +14,7 @@
 	float fval;
   char name[20];
   int type;
+  char op;
 }
 
 %token<name> INT_WORD
@@ -24,7 +25,8 @@
 %token<name> ID
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
-%token ADDOP MULOP SEMICOLON ASSIGN
+%token<op> ADDOP MULOP
+%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET
 
 %type<type> TYPE
 
@@ -57,7 +59,7 @@ TYPE :
 ;
 
 ASSIGNMENT :
-    ID ASSIGN EXPRESSION SEMICOLON { cout << "assignment" << endl;}
+    ID ASSIGN EXPRESSION SEMICOLON
 ;
 
 EXPRESSION :
@@ -71,11 +73,11 @@ T_EXPRESSION :
 ;
 
 FACTOR :
-    INTEGER_LITERAL { cout << "int literal" << endl;}
+    INTEGER_LITERAL
   | FLOAT_LITERAL
   | ID
-  | '(' EXPRESSION ')'
-
+  | LEFT_BRACKET EXPRESSION RIGHT_BRACKET
+;
 %%
 
 
