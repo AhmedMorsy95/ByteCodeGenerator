@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string>
 #include "parse.tab.h"
 
 using namespace std;
@@ -10,6 +11,8 @@ int main(int argc, char **argv)
 		printf("%s: File %s cannot be opened", argv[0], argv[1]);
     return 1;
   }
+	extern string outfileName;
+	outfileName = argv[1];
 	yyparse();
 	return 0;
 }

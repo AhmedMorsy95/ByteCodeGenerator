@@ -1,4 +1,4 @@
-.source 
+.source simple_test.in
 .class public test
 .super java/lang/Object
 
@@ -18,10 +18,8 @@ fstore 2
 .line 1
 iconst_0
 istore 3
-iconst_0
-istore 4
-iload 4
-ldc 69
+ldc 60
+ldc 70
 iadd
 istore 3
 return
