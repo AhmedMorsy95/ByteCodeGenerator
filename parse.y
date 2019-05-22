@@ -24,20 +24,20 @@
   struct {
 		vector<int> *trueList, *falseList;
 	} bexpr;
+  struct {
+		vector<int> *nextList;
+	} stmt;
 }
 
-%token<name> INT_WORD
-%token<name> FLOAT_WORD
-%token<name> BOOL_WORD
-%token<name> VOID_WORD
-%token<name> ERROR_WORD
-%token<name> ID
+%token<name> INT_WORD FLOAT_WORD BOOL_WORD VOID_WORD ERROR_WORD ID
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
 %token<op> ADDOP MULOP RELOP BINOP NOTOP
 %token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET PRINT_FUNCTION COMMENT_LINE TRUE FALSE LEFT_BRACE RIGHT_BRACE IF_WORD ELSE_WORD
 
+%type<ival> marker goto
 %type<type> TYPE
+%type<stmt> IF STATEMENT STATEMENT_LIST
 %type<type> ARTH_FACTOR T_EXPRESSION ARTH_EXPRESSION EXPRESSION
 %type<bexpr> BOOL_FACTOR BOOL_T_EXPRESSION BOOL_EXPRESSION
 
@@ -52,15 +52,19 @@ input :
 
 STATEMENT_LIST :
     STATEMENT
-  | STATEMENT_LIST STATEMENT
+  | STATEMENT_LIST marker STATEMENT
+    {
+  		backpatch($1.nextList,$2);
+  		$$.nextList = $3.nextList;
+  	}
 ;
 
 STATEMENT :
-    DECLARATION
-  | ASSIGNMENT
-  | PRINT
-  | COMMENT_LINE
-  | IF
+    DECLARATION { $$.nextList = new vector<int>();}
+  | ASSIGNMENT  { $$.nextList = new vector<int>();}
+  | PRINT       { $$.nextList = new vector<int>();}
+  | COMMENT_LINE { $$.nextList = new vector<int>();}
+  | IF { $$.nextList = $1.nextList; }
 ;
 
 PRINT :
@@ -163,27 +167,89 @@ ARTH_FACTOR :
   | LEFT_BRACKET ARTH_EXPRESSION RIGHT_BRACKET { $$ = $2; }
 ;
 
+marker:
+{
+	$$ = labelsCount;
+	writeCode(genLabel() + ":");
+}
+;
+
+goto:
+{
+	$$ = codeList.size();
+	writeCode("goto ");
+}
+
 IF :
-    "if" LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE STATEMENT_LIST RIGHT_BRACE "else" LEFT_BRACE STATEMENT_LIST RIGHT_BRACE
+    IF_WORD LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE marker STATEMENT_LIST goto RIGHT_BRACE ELSE_WORD LEFT_BRACE marker STATEMENT_LIST RIGHT_BRACE
+    {
+  		backpatch($3.trueList,$6);
+  		backpatch($3.falseList,$12);
+  		$$.nextList = merge($7.nextList, $13.nextList);
+  		$$.nextList->push_back($8);
+  	}
   // | "if" '(' EXPRESSION ')' '{' STATEMENT '}'
 ;
 
 BOOL_EXPRESSION :
     BOOL_EXPRESSION BINOP BOOL_T_EXPRESSION
   | BOOL_T_EXPRESSION
+    {
+      $$.trueList = $1.trueList;
+      $$.falseList = $1.falseList;
+    }
 ;
 
 BOOL_T_EXPRESSION :
     BOOL_T_EXPRESSION RELOP BOOL_FACTOR
   | BOOL_FACTOR
+    {
+      $$.trueList = $1.trueList;
+      $$.falseList = $1.falseList;
+    }
 ;
 
 BOOL_FACTOR :
     TRUE
+    {
+      $$.trueList = new vector<int> ();
+			$$.trueList->push_back(codeList.size());
+			$$.falseList = new vector<int>();
+			writeCode("goto ");
+    }
   | FALSE
+    {
+      $$.trueList = new vector<int> ();
+			$$.falseList= new vector<int>();
+			$$.falseList->push_back(codeList.size());
+			writeCode("goto ");
+    }
   | ID
+    {
+      string str($1);
+      if(checkId(str))
+      {
+        if(symbTab[str].second == INT_T)
+        {
+          writeCode("iload " + to_string(symbTab[str].first));
+        }
+        else if (symbTab[str].second == FLOAT_T)
+        {
+          writeCode("fload " + to_string(symbTab[str].first));
+        }
+      }
+      else
+      {
+        string err = "Identifier: " + str + " has not been declared";
+        yyerror(err.c_str());
+      }
+    }
   | NOTOP BOOL_EXPRESSION
   | LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET
+    {
+      $$.trueList = $2.trueList;
+      $$.falseList = $2.falseList;
+    }
 ;
 %%
 
