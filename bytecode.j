@@ -1,4 +1,4 @@
-.source simple_test.in
+.source code.in
 .class public test
 .super java/lang/Object
 

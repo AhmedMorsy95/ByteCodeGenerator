@@ -28,8 +28,8 @@ comment "//".*
 "System.out.println"	{ return PRINT_FUNCTION; }
 "int" 	   { strcpy(yylval.name,yytext); return INT_WORD; }
 "float" 	 { strcpy(yylval.name,yytext); return FLOAT_WORD; }
-"if"   	   { printf("if\n"); }
-"else"     { printf("else\n"); }
+"if"   	   { return IF_WORD; }
+"else"     { return ELSE_WORD; }
 "while"    { printf("while\n"); }
 "true"     { return TRUE; }
 "false"    { return FALSE; }
@@ -44,8 +44,8 @@ comment "//".*
 "="        { return ASSIGN; }
 "("	       { return LEFT_BRACKET; }
 ")"	       { return RIGHT_BRACKET; }
-"{"        { printf("{\n"); }
-"}"        { printf("}\n"); }
+"{"        { return LEFT_BRACE; }
+"}"        { return RIGHT_BRACE; }
 ","        { printf(",\n"); }
 ";"        { return SEMICOLON; }
 {comment}  { return COMMENT_LINE; }

@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include <iostream>
+    #include <vector>
     #include "heading.h"
 
     using namespace std;
@@ -9,12 +10,20 @@
     int yylex(void);
 %}
 
+%code requires {
+	#include <vector>
+	using namespace std;
+}
+
 %union {
 	int ival;
 	float fval;
   char name[20];
   int type;
   char op[2];
+  struct {
+		vector<int> *trueList, *falseList;
+	} bexpr;
 }
 
 %token<name> INT_WORD
@@ -26,11 +35,12 @@
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
 %token<op> ADDOP MULOP RELOP BINOP NOTOP
-%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET PRINT_FUNCTION COMMENT_LINE TRUE FALSE
+%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET PRINT_FUNCTION COMMENT_LINE TRUE FALSE LEFT_BRACE RIGHT_BRACE IF_WORD ELSE_WORD
 
 %type<type> TYPE
 %type<type> ARTH_FACTOR T_EXPRESSION ARTH_EXPRESSION EXPRESSION
-%type<type> BOOL_FACTOR BOOL_T_EXPRESSION BOOL_EXPRESSION
+%type<bexpr> BOOL_FACTOR BOOL_T_EXPRESSION BOOL_EXPRESSION
+
 %start input
 
 %%
@@ -50,6 +60,7 @@ STATEMENT :
   | ASSIGNMENT
   | PRINT
   | COMMENT_LINE
+  | IF
 ;
 
 PRINT :
@@ -152,6 +163,11 @@ ARTH_FACTOR :
   | LEFT_BRACKET ARTH_EXPRESSION RIGHT_BRACKET { $$ = $2; }
 ;
 
+IF :
+    "if" LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE STATEMENT_LIST RIGHT_BRACE "else" LEFT_BRACE STATEMENT_LIST RIGHT_BRACE
+  // | "if" '(' EXPRESSION ')' '{' STATEMENT '}'
+;
+
 BOOL_EXPRESSION :
     BOOL_EXPRESSION BINOP BOOL_T_EXPRESSION
   | BOOL_T_EXPRESSION
@@ -163,12 +179,12 @@ BOOL_T_EXPRESSION :
 ;
 
 BOOL_FACTOR :
-    TRUE  {cout << "true" << endl; writeCode("ldc 1"); }
-  | FALSE { writeCode("ldc 0"); }
+    TRUE
+  | FALSE
   | ID
   | NOTOP BOOL_EXPRESSION
   | LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET
-
+;
 %%
 
 

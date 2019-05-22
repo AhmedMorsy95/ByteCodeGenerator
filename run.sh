@@ -6,7 +6,7 @@ if [ $? -eq 0 ]; then
   if [ $? -eq 0 ]; then
     echo "Build succeeded."
     echo "Running output file"
-    ./java_compiler simple_test.in
+    ./java_compiler code.in
     if [ $? -eq 0 ]; then
       jasmin bytecode.j
       if [ $? -eq 0 ]; then
