@@ -238,8 +238,7 @@ BOOL_T_EXPRESSION :
 ;
 
 BOOL_FACTOR :
-    INTEGER_LITERAL { writeCode("ldc " + to_string($1)); }
-  | FLOAT_LITERAL   { writeCode("ldc " + to_string($1)); }
+    ARTH_EXPRESSION
   | TRUE
     {
       $$.trueList = new vector<int> ();
@@ -253,26 +252,6 @@ BOOL_FACTOR :
 			$$.falseList= new vector<int>();
 			$$.falseList->push_back(codeList.size());
 			writeCode("goto ");
-    }
-  | ID
-    {
-      string str($1);
-      if(checkId(str))
-      {
-        if(symbTab[str].second == INT_T)
-        {
-          writeCode("iload " + to_string(symbTab[str].first));
-        }
-        else if (symbTab[str].second == FLOAT_T)
-        {
-          writeCode("fload " + to_string(symbTab[str].first));
-        }
-      }
-      else
-      {
-        string err = "Identifier: " + str + " has not been declared";
-        yyerror(err.c_str());
-      }
     }
   | NOTOP BOOL_EXPRESSION
     {

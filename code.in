@@ -2,18 +2,24 @@ int x;
 int y;
 x = 100;
 y = 50;
-// x = x + y + 1;
-// Printing x to make sure of the result
-// System.out.println(x);
-if (x > y)
+int z;
+z = 51;
+
+// I <3 Indomie Sha3reya
+
+if ((x < y + z) && !(y > z))
 {
-    // System.out.println(x+2);
     x = 2;
 }
-// else
-// {
-//     // System.out.println(x%130);
-//     x = x + 3;
-// }
+else
+{
+    x = x + 3;
+}
+
+// حادي بادي كرمب زبادي
+// إيه اللي جاب الكرمب على الزبادي؟
+// مين المحشش اللي ألف الأغنية دي؟
+// I don't care, it can be useful during MCQ questions :D
+// ^ This was to test the comments recognition in our flex/bison code.
 
 System.out.println(x);

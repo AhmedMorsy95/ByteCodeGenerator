@@ -28,18 +28,33 @@ L_2:
 ldc 50
 istore 4
 L_3:
+iconst_0
+istore 5
 L_4:
+ldc 51
+istore 5
 L_5:
 L_6:
 iload 3
 iload 4
-if_icmpgt L_7
+iload 5
+iadd
+if_icmplt L_7
 goto L_9
 L_7:
+iload 4
+iload 5
+if_icmpgt L_9
+goto L_8
 L_8:
 ldc 2
 istore 3
+goto L_10
 L_9:
+iload 3
+ldc 3
+iadd
+istore 3
 L_10:
 L_11:
 L_12:
