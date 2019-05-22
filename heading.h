@@ -46,9 +46,10 @@ void defineVar(string name, int type)
 	{
 		string err = "variable: "+name+" declared before";
 		yyerror(err.c_str());
-	}else
+	}
+	else
 	{
-		if(type == INT_T)
+		if(type == INT_T || type == BOOL_T)
 		{
 			writeCode("iconst_0\nistore " + to_string(varaiblesNum));
 		}
@@ -158,9 +159,11 @@ vector<int> * merge(vector<int> *list1, vector<int> *list2)
 void backpatch(vector<int> *lists, int ind)
 {
 	if(lists)
-	for(int i =0 ; i < lists->size() ; i++)
 	{
-		codeList[(*lists)[i]] = codeList[(*lists)[i]] + getLabel(ind);
+		for(int i = 0; i < lists->size(); i++)
+		{
+			codeList[(*lists)[i]] += getLabel(ind);
+		}
 	}
 }
 

@@ -25,11 +25,12 @@
 %token<name> ID
 %token<ival> INTEGER_LITERAL
 %token<fval> FLOAT_LITERAL
-%token<op> ADDOP MULOP
-%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET PRINT_FUNCTION COMMENT_LINE
+%token<op> ADDOP MULOP RELOP BINOP NOTOP
+%token SEMICOLON ASSIGN LEFT_BRACKET RIGHT_BRACKET PRINT_FUNCTION COMMENT_LINE TRUE FALSE
 
 %type<type> TYPE
 %type<type> ARTH_FACTOR T_EXPRESSION ARTH_EXPRESSION EXPRESSION
+%type<type> BOOL_FACTOR BOOL_T_EXPRESSION BOOL_EXPRESSION
 %start input
 
 %%
@@ -71,18 +72,7 @@ PRINT :
     }
 
 DECLARATION :
-    TYPE ID SEMICOLON
-    {
-      string str($2);
-      if($1 == INT_T)
-      {
-        defineVar(str,INT_T);
-      }
-      else if ($1 == FLOAT_T)
-      {
-        defineVar(str,FLOAT_T);
-      }
-    }
+    TYPE ID SEMICOLON { defineVar(string($2),$1); }
 ;
 
 TYPE :
@@ -122,7 +112,6 @@ ASSIGNMENT :
 
 EXPRESSION :
     ARTH_EXPRESSION { $$ = $1; }
-  // | BOOL_EXPRESSION
 ;
 
 ARTH_EXPRESSION :
@@ -162,6 +151,24 @@ ARTH_FACTOR :
     }
   | LEFT_BRACKET ARTH_EXPRESSION RIGHT_BRACKET { $$ = $2; }
 ;
+
+BOOL_EXPRESSION :
+    BOOL_EXPRESSION BINOP BOOL_T_EXPRESSION
+  | BOOL_T_EXPRESSION
+;
+
+BOOL_T_EXPRESSION :
+    BOOL_T_EXPRESSION RELOP BOOL_FACTOR
+  | BOOL_FACTOR
+;
+
+BOOL_FACTOR :
+    TRUE  {cout << "true" << endl; writeCode("ldc 1"); }
+  | FALSE { writeCode("ldc 0"); }
+  | ID
+  | NOTOP BOOL_EXPRESSION
+  | LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET
+
 %%
 
 

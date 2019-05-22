@@ -37,5 +37,19 @@ istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;
 iload 1
 invokevirtual java/io/PrintStream/println(I)V
+iload 3
+ldc 2
+iadd
+istore 1
+getstatic      java/lang/System/out Ljava/io/PrintStream;
+iload 1
+invokevirtual java/io/PrintStream/println(I)V
+iload 3
+ldc 130
+irem
+istore 1
+getstatic      java/lang/System/out Ljava/io/PrintStream;
+iload 1
+invokevirtual java/io/PrintStream/println(I)V
 return
 .end method

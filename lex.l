@@ -17,23 +17,28 @@ id      {letter}({letter}|{digit})*
 float   {digit}+(\.{digit}+)
 int  	  {digit}+
 relop	  "<"|"<="|">"|">="|"=="|"!="
+binop   "&&"|"||"|"^"
+notop   "!"
 addop   "+"|"-"
-mulop	  "*"|"/"
-comment "//"({letter}*{digit}*[ \t]*)*
+mulop	  "*"|"/"|"%"
+comment "//".*
 
 %%
 {ws}       {}
 "System.out.println"	{ return PRINT_FUNCTION; }
-"boolean"  { printf("boolean\n"); }
 "int" 	   { strcpy(yylval.name,yytext); return INT_WORD; }
 "float" 	 { strcpy(yylval.name,yytext); return FLOAT_WORD; }
 "if"   	   { printf("if\n"); }
 "else"     { printf("else\n"); }
 "while"    { printf("while\n"); }
+"true"     { return TRUE; }
+"false"    { return FALSE; }
 {id}	     { strcpy(yylval.name,yytext); return ID; }
 {int}	     { yylval.ival = atoi(yytext); return INTEGER_LITERAL; }
 {float}	   { yylval.fval = atof(yytext); return FLOAT_LITERAL; }
-{relop}	   { printf("relop\n"); }
+{relop}	   { strcpy(yylval.op,yytext); return RELOP; }
+{binop}	   { strcpy(yylval.op,yytext); return BINOP; }
+{notop}	   { strcpy(yylval.op,yytext); return NOTOP; }
 {addop}	   { strcpy(yylval.op,yytext); return ADDOP; }
 {mulop}	   { strcpy(yylval.op,yytext); return MULOP; }
 "="        { return ASSIGN; }
