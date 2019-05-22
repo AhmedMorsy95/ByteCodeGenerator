@@ -245,6 +245,10 @@ BOOL_FACTOR :
       }
     }
   | NOTOP BOOL_EXPRESSION
+    {
+      $$.trueList = $2.falseList;
+      $$.falseList = $2.trueList;
+    }
   | LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET
     {
       $$.trueList = $2.trueList;
