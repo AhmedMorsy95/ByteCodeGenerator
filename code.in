@@ -1,19 +1,14 @@
 int x;
 int y;
-x = 60 + 70;
-y = 2;
-// x = x + y + 1;
-// Printing x to make sure of the result
-// System.out.println(x);
-if (x > y || x < 129)
+
+x = 100;
+y = 50;
+
+if (x > y)
 {
-    // System.out.println(x+2);
-    x = 2;
+  System.out.println(x);
 }
 else
 {
-    // System.out.println(x%130);
-    x = x + 3;
+  System.out.println(y);
 }
-
-System.out.println(x);

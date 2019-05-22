@@ -188,7 +188,12 @@ IF :
   		$$.nextList = merge($7.nextList, $13.nextList);
   		$$.nextList->push_back($8);
   	}
-  // | "if" '(' EXPRESSION ')' '{' STATEMENT '}'
+  | IF_WORD LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE marker STATEMENT_LIST RIGHT_BRACE marker
+    {
+      backpatch($3.trueList,$6);
+  		backpatch($3.falseList,$9);
+  		$$.nextList = $7.nextList;
+    }
 ;
 
 BOOL_EXPRESSION :

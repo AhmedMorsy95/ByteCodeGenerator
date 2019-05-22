@@ -17,7 +17,7 @@ id      {letter}({letter}|{digit})*
 float   {digit}+(\.{digit}+)
 int  	  {digit}+
 relop	  "<"|"<="|">"|">="|"=="|"!="
-binop   "&&"|"||"|"^"
+binop   "&&"|"||"
 notop   "!"
 addop   "+"|"-"
 mulop	  "*"|"/"|"%"
