@@ -47,7 +47,7 @@
 
 input :
     %empty
-  | {	generateHeader();	} STATEMENT_LIST { generateFooter(); printCode(); }
+  | {	generateHeader();	} STATEMENT_LIST { generateFooter(); printCode(); cout << "Done" << endl; }
 ;
 
 STATEMENT_LIST :
@@ -202,6 +202,15 @@ BOOL_EXPRESSION :
 
 BOOL_T_EXPRESSION :
     BOOL_T_EXPRESSION RELOP BOOL_FACTOR
+    {
+  		string op ($2);
+  		$$.trueList = new vector<int>();
+  		$$.trueList ->push_back (codeList.size());
+  		$$.falseList = new vector<int>();
+  		$$.falseList->push_back(codeList.size()+1);
+  		writeCode(getOp(op)+ " ");
+  		writeCode("goto ");
+  	}
   | BOOL_FACTOR
     {
       $$.trueList = $1.trueList;
@@ -210,7 +219,9 @@ BOOL_T_EXPRESSION :
 ;
 
 BOOL_FACTOR :
-    TRUE
+    INTEGER_LITERAL { writeCode("ldc " + to_string($1)); }
+  | FLOAT_LITERAL   { writeCode("ldc " + to_string($1)); }
+  | TRUE
     {
       $$.trueList = new vector<int> ();
 			$$.trueList->push_back(codeList.size());
