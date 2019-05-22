@@ -181,12 +181,12 @@ goto:
 }
 
 IF :
-    IF_WORD LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE marker STATEMENT_LIST goto RIGHT_BRACE ELSE_WORD LEFT_BRACE marker STATEMENT_LIST RIGHT_BRACE
+    IF_WORD LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE marker STATEMENT_LIST RIGHT_BRACE goto ELSE_WORD LEFT_BRACE marker STATEMENT_LIST RIGHT_BRACE
     {
   		backpatch($3.trueList,$6);
   		backpatch($3.falseList,$12);
   		$$.nextList = merge($7.nextList, $13.nextList);
-  		$$.nextList->push_back($8);
+  		$$.nextList->push_back($9);
   	}
   | IF_WORD LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET LEFT_BRACE marker STATEMENT_LIST RIGHT_BRACE marker
     {
