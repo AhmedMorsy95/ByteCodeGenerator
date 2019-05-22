@@ -5,7 +5,7 @@ y = 2;
 // x = x + y + 1;
 // Printing x to make sure of the result
 // System.out.println(x);
-if (x > y)
+if (x > y || x < 129)
 {
     // System.out.println(x+2);
     x = 2;
@@ -15,4 +15,5 @@ else
     // System.out.println(x%130);
     x = x + 3;
 }
+
 System.out.println(x);

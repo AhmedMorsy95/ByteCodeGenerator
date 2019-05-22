@@ -192,7 +192,21 @@ IF :
 ;
 
 BOOL_EXPRESSION :
-    BOOL_EXPRESSION BINOP BOOL_T_EXPRESSION
+    BOOL_EXPRESSION BINOP marker BOOL_T_EXPRESSION
+    {
+  		if(!strcmp($2, "&&"))
+  		{
+  			backpatch($1.trueList, $3);
+  			$$.trueList = $4.trueList;
+  			$$.falseList = merge($1.falseList,$4.falseList);
+  		}
+  		else if (!strcmp($2,"||"))
+  		{
+  			backpatch($1.falseList,$3);
+  			$$.trueList = merge($1.trueList, $4.trueList);
+  			$$.falseList = $4.falseList;
+  		}
+  	}
   | BOOL_T_EXPRESSION
     {
       $$.trueList = $1.trueList;

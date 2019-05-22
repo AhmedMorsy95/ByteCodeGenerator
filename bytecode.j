@@ -35,20 +35,25 @@ L_5:
 L_6:
 iload 3
 iload 4
-if_icmpgt L_7
-goto L_9
+if_icmpgt L_8
+goto L_7
 L_7:
+iload 3
+ldc 129
+if_icmplt L_8
+goto L_10
 L_8:
+L_9:
 ldc 2
 istore 3
-goto L_11
-L_9:
+goto L_12
 L_10:
+L_11:
 iload 3
 ldc 3
 iadd
 istore 3
-L_11:
+L_12:
 iload 3
 istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;
