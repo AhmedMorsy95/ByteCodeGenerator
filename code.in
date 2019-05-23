@@ -9,7 +9,6 @@ boolean f;
 f = (x == 100) && y == 50;
 
 System.out.println(f);
-// I <3 Indomie Sha3reya
 
 if (f && (x < y + z) && !(y > z))
 {
@@ -20,10 +19,6 @@ else
     x = x + 3;
 }
 
-// حادي بادي كرمب زبادي
-// إيه اللي جاب الكرمب على الزبادي؟
-// مين المحشش اللي ألف الأغنية دي؟
-// I don't care, it can be useful during MCQ questions :D
 // ^ This was to test the comments recognition in our flex/bison code.
 
 System.out.println(x);
