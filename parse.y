@@ -205,7 +205,7 @@ BOOL_EXPRESSION :
     {
       if (assign_flag)
       {
-
+        writeCode("i" + getOp(string($2)));
       }
       else
       {

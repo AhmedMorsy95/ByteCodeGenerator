@@ -6,7 +6,7 @@ int z;
 z = 51;
 
 boolean f;
-f = (x == 100);
+f = (x == 100) && y == 50;
 
 System.out.println(f);
 // I <3 Indomie Sha3reya
