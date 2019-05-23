@@ -71,7 +71,7 @@ STATEMENT :
 PRINT :
     PRINT_FUNCTION LEFT_BRACKET EXPRESSION RIGHT_BRACKET SEMICOLON
     {
-      if($3 == INT_T)
+      if($3 == INT_T || $3 == BOOL_T)
 		  {
   			writeCode("istore " + to_string(symbTab["1syso_int_var"].first));
   			writeCode("getstatic      java/lang/System/out Ljava/io/PrintStream;");
@@ -154,6 +154,7 @@ ARTH_FACTOR :
         $$ = symbTab[str].second;
         if($$ == INT_T || $$ == BOOL_T)
         {
+          cout << str << endl;
           writeCode("iload " + to_string(symbTab[str].first));
         }
         else if ($$ == FLOAT_T)
@@ -227,7 +228,7 @@ BOOL_EXPRESSION :
     {
       if (assign_flag)
       {
-
+        // Do nothing as BOOL_T_EXPRESSION will be already loaded to stack
       }
       else
       {

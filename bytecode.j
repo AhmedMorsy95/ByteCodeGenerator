@@ -58,6 +58,10 @@ iand
 istore 6
 L_12:
 iload 6
+istore 1
+getstatic      java/lang/System/out Ljava/io/PrintStream;
+iload 1
+invokevirtual java/io/PrintStream/println(I)V
 L_13:
 L_14:
 iload 6
