@@ -37,8 +37,8 @@ L_5:
 iconst_0
 istore 6
 L_6:
-ldc 1
-ldc 0
+iload 3
+ldc 100
 if_icmpeq L_7
 ldc 0
 goto L_8
@@ -56,36 +56,31 @@ if_icmpeq L_15
 goto L_12
 L_12:
 iload 3
-ldc 100
-if_icmpeq L_13
-goto L_15
-L_13:
-iload 3
 iload 4
 iload 5
 iadd
-if_icmplt L_14
+if_icmplt L_13
 goto L_15
-L_14:
+L_13:
 iload 4
 iload 5
 if_icmpgt L_15
-goto L_16
-L_15:
+goto L_14
+L_14:
 ldc 2
 istore 3
-goto L_17
-L_16:
+goto L_16
+L_15:
 iload 3
 ldc 3
 iadd
 istore 3
+L_16:
 L_17:
 L_18:
 L_19:
 L_20:
 L_21:
-L_22:
 iload 3
 istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;

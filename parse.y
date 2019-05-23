@@ -242,7 +242,14 @@ BOOL_T_EXPRESSION :
     {
       if (assign_flag)
       {
-
+        string trueLabel = genLabel();
+        writeCode(getOp(string($2)) + " " + trueLabel);
+        writeCode("ldc 0"); // Loads 0 into stack
+        string nextLabel = genLabel(); // Generate label for next instruction
+        writeCode("goto " + nextLabel); // Go to next instruction after RELOP
+        writeCode(trueLabel + ":"); // Label for negating a 0 (false)
+        writeCode("ldc 1"); // If top of stack was 0 (false), load 1 (true) to stack
+        writeCode(nextLabel + ":"); // Label for next instruction
       }
       else
       {
@@ -259,7 +266,7 @@ BOOL_T_EXPRESSION :
     {
       if (assign_flag)
       {
-
+        // Do nothing as BOOL_FACTOR will be already loaded to stack
       }
       else
       {
