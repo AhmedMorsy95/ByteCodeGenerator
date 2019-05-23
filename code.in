@@ -6,13 +6,12 @@ int z;
 z = 51;
 
 boolean f;
-f = true;
+f = !true;
 
 System.out.println(f);
 // I <3 Indomie Sha3reya
 
-// if ((x == 100) && (x < y + z) && !(y > z))
-if (!f || x != 100)
+if (!f && (x == 100) && (x < y + z) && !(y > z))
 {
     x = 2;
 }

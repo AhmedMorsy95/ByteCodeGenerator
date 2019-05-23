@@ -274,7 +274,7 @@ BOOL_FACTOR :
     {
       if (assign_flag)
       {
-
+        // Do nothing as ARTH_EXPRESSION  will be already calculated
       }
       else
       {
@@ -322,7 +322,15 @@ BOOL_FACTOR :
     {
       if (assign_flag)
       {
-
+        writeCode("ldc 0"); // Loads 0 into stack
+        string trueLabel = genLabel(); // Generates a label that it will go to if the top of the stack was 0 (or false)
+        writeCode("if_icmpeq " + trueLabel); // If top of stack was 0 (false), go to trueLabel
+        writeCode("ldc 0"); // If top of stack was != 0 (true), load 0 (false) to stack
+        string nextLabel = genLabel(); // Generate label for next instruction
+        writeCode("goto " + nextLabel); // Go to next instruction after NOT
+        writeCode(trueLabel + ":"); // Label for negating a 0 (false)
+        writeCode("ldc 1"); // If top of stack was 0 (false), load 1 (true) to stack
+        writeCode(nextLabel + ":"); // Label for next instruction
       }
       else
       {
@@ -334,7 +342,7 @@ BOOL_FACTOR :
     {
       if (assign_flag)
       {
-
+        // Do nothing as BOOL_EXPRESSION has already been evaluated and and top of the stack
       }
       else
       {
