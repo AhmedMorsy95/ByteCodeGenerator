@@ -8,6 +8,7 @@
 
     int yyerror(char *s);
     int yylex(void);
+    bool assign_flag = false;
 %}
 
 %code requires {
@@ -93,21 +94,23 @@ DECLARATION :
 TYPE :
     INT_WORD   { $$ = INT_T; }
   | FLOAT_WORD { $$ = FLOAT_T; }
+  | BOOL_WORD  { $$ = BOOL_T; }
 ;
 
 ASSIGNMENT :
-    ID ASSIGN EXPRESSION SEMICOLON
+    ID ASSIGN { assign_flag = true; } EXPRESSION SEMICOLON
     {
+      assign_flag = false;
   		string str($1);
   		if(checkId(str))
   		{
-  			if($3 == symbTab[str].second)
+  			if($4 == symbTab[str].second)
   			{
-  				if($3 == INT_T)
+  				if($4 == INT_T || $4 == BOOL_T)
   				{
   					writeCode("istore " + to_string(symbTab[str].first));
   				}
-          else if ($3 == FLOAT_T)
+          else if ($4 == FLOAT_T)
   				{
   					writeCode("fstore " + to_string(symbTab[str].first));
   				}
@@ -127,6 +130,7 @@ ASSIGNMENT :
 
 EXPRESSION :
     ARTH_EXPRESSION { $$ = $1; }
+  | BOOL_EXPRESSION { $$ = BOOL_T; }
 ;
 
 ARTH_EXPRESSION :
@@ -148,7 +152,7 @@ ARTH_FACTOR :
       if(checkId(str))
       {
         $$ = symbTab[str].second;
-        if($$ == INT_T)
+        if($$ == INT_T || $$ == BOOL_T)
         {
           writeCode("iload " + to_string(symbTab[str].first));
         }
@@ -199,69 +203,144 @@ IF :
 BOOL_EXPRESSION :
     BOOL_EXPRESSION BINOP marker BOOL_T_EXPRESSION
     {
-  		if(!strcmp($2, "&&"))
-  		{
-  			backpatch($1.trueList, $3);
-  			$$.trueList = $4.trueList;
-  			$$.falseList = merge($1.falseList,$4.falseList);
-  		}
-  		else if (!strcmp($2,"||"))
-  		{
-  			backpatch($1.falseList,$3);
-  			$$.trueList = merge($1.trueList, $4.trueList);
-  			$$.falseList = $4.falseList;
-  		}
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+        if(!strcmp($2, "&&"))
+        {
+          backpatch($1.trueList, $3);
+          $$.trueList = $4.trueList;
+          $$.falseList = merge($1.falseList,$4.falseList);
+        }
+        else if (!strcmp($2,"||"))
+        {
+          backpatch($1.falseList,$3);
+          $$.trueList = merge($1.trueList, $4.trueList);
+          $$.falseList = $4.falseList;
+        }
+      }
   	}
   | BOOL_T_EXPRESSION
     {
-      $$.trueList = $1.trueList;
-      $$.falseList = $1.falseList;
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+        $$.trueList = $1.trueList;
+        $$.falseList = $1.falseList;
+      }
     }
 ;
 
 BOOL_T_EXPRESSION :
     BOOL_T_EXPRESSION RELOP BOOL_FACTOR
     {
-  		string op ($2);
-  		$$.trueList = new vector<int>();
-  		$$.trueList ->push_back (codeList.size());
-  		$$.falseList = new vector<int>();
-  		$$.falseList->push_back(codeList.size()+1);
-  		writeCode(getOp(op)+ " ");
-  		writeCode("goto ");
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+    		string op ($2);
+    		$$.trueList = new vector<int>();
+    		$$.trueList ->push_back (codeList.size());
+    		$$.falseList = new vector<int>();
+    		$$.falseList->push_back(codeList.size()+1);
+    		writeCode(getOp(op)+ " ");
+    		writeCode("goto ");
+      }
   	}
   | BOOL_FACTOR
     {
-      $$.trueList = $1.trueList;
-      $$.falseList = $1.falseList;
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+        $$.trueList = $1.trueList;
+        $$.falseList = $1.falseList;
+      }
     }
 ;
 
 BOOL_FACTOR :
     ARTH_EXPRESSION
+    {
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+        if ($1 == BOOL_T){
+          // ID is on top of stack
+          writeCode("ldc 0"); //push zero to stack
+          $$.falseList = new vector<int>();
+      		$$.falseList->push_back(codeList.size()); //if result of comparing to zero if false, then the variable is true
+      		writeCode("if_icmpeq "); //comparing to 0
+          $$.trueList = new vector<int>();
+      		$$.trueList ->push_back (codeList.size()); //vice versa
+      		writeCode("goto ");
+        }
+      }
+    }
   | TRUE
     {
-      $$.trueList = new vector<int> ();
-			$$.trueList->push_back(codeList.size());
-			$$.falseList = new vector<int>();
-			writeCode("goto ");
+      if (assign_flag)
+      {
+        writeCode("ldc 1");
+      }
+      else
+      {
+        $$.trueList = new vector<int> ();
+  			$$.trueList->push_back(codeList.size());
+  			$$.falseList = new vector<int>();
+  			writeCode("goto ");
+      }
     }
   | FALSE
     {
-      $$.trueList = new vector<int> ();
-			$$.falseList= new vector<int>();
-			$$.falseList->push_back(codeList.size());
-			writeCode("goto ");
+      if (assign_flag)
+      {
+        writeCode("ldc 0");
+      }
+      else
+      {
+        $$.trueList = new vector<int> ();
+  			$$.falseList= new vector<int>();
+  			$$.falseList->push_back(codeList.size());
+  			writeCode("goto ");
+      }
     }
   | NOTOP BOOL_EXPRESSION
     {
-      $$.trueList = $2.falseList;
-      $$.falseList = $2.trueList;
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+        $$.trueList = $2.falseList;
+        $$.falseList = $2.trueList;
+      }
     }
   | LEFT_BRACKET BOOL_EXPRESSION RIGHT_BRACKET
     {
-      $$.trueList = $2.trueList;
-      $$.falseList = $2.falseList;
+      if (assign_flag)
+      {
+
+      }
+      else
+      {
+        $$.trueList = $2.trueList;
+        $$.falseList = $2.falseList;
+      }
     }
 ;
 %%

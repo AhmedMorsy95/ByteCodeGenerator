@@ -28,6 +28,7 @@ comment "//".*
 "System.out.println"	{ return PRINT_FUNCTION; }
 "int" 	   { strcpy(yylval.name,yytext); return INT_WORD; }
 "float" 	 { strcpy(yylval.name,yytext); return FLOAT_WORD; }
+"boolean"  { strcpy(yylval.name,yytext); return BOOL_WORD; }
 "if"   	   { return IF_WORD; }
 "else"     { return ELSE_WORD; }
 "while"    { printf("while\n"); }
