@@ -154,7 +154,6 @@ ARTH_FACTOR :
         $$ = symbTab[str].second;
         if($$ == INT_T || $$ == BOOL_T)
         {
-          cout << str << endl;
           writeCode("iload " + to_string(symbTab[str].first));
         }
         else if ($$ == FLOAT_T)

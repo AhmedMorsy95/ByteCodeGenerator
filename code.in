@@ -19,6 +19,6 @@ else
     x = x + 3;
 }
 
-// ^ This was to test the comments recognition in our flex/bison code.
+// This is to test the comments recognition in our flex/bison code.
 
 System.out.println(x);

@@ -63,38 +63,33 @@ getstatic      java/lang/System/out Ljava/io/PrintStream;
 iload 1
 invokevirtual java/io/PrintStream/println(I)V
 L_13:
-L_14:
 iload 6
 ldc 0
-if_icmpeq L_18
-goto L_15
-L_15:
+if_icmpeq L_17
+goto L_14
+L_14:
 iload 3
 iload 4
 iload 5
 iadd
-if_icmplt L_16
-goto L_18
-L_16:
+if_icmplt L_15
+goto L_17
+L_15:
 iload 4
 iload 5
-if_icmpgt L_18
-goto L_17
-L_17:
+if_icmpgt L_17
+goto L_16
+L_16:
 ldc 2
 istore 3
-goto L_19
-L_18:
+goto L_18
+L_17:
 iload 3
 ldc 3
 iadd
 istore 3
+L_18:
 L_19:
-L_20:
-L_21:
-L_22:
-L_23:
-L_24:
 iload 3
 istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;
